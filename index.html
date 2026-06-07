@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>DQIH - Executive Presentation</title>
+<style>
+:root {
+    --bg-main: #030712;
+    --surface: rgba(16, 35, 61, 0.4);
+    --surface-hover: rgba(16, 35, 61, 0.8);
+    --accent-cyan: #00f3ff;
+    --accent-blue: #3b82f6;
+    --text-primary: #f8fafc;
+    --text-secondary: #94a3b8;
+}
+
+body {
+    margin: 0;
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: var(--bg-main);
+    color: var(--text-primary);
+    scroll-behavior: smooth;
+    overflow-x: hidden;
+}
+
+/* Clean, futuristic ambient background */
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: radial-gradient(circle at 15% 50%, rgba(0, 243, 255, 0.03), transparent 30%),
+                radial-gradient(circle at 85% 30%, rgba(59, 130, 246, 0.03), transparent 30%);
+    z-index: -1;
+    pointer-events: none;
+}
+
+.sticky {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background: rgba(3, 7, 18, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    padding: 16px;
+    text-align: center;
+    z-index: 100;
+    font-weight: 600;
+    letter-spacing: 2px;
+    color: var(--accent-cyan);
+    border-bottom: 1px solid rgba(0, 243, 255, 0.1);
+    box-sizing: border-box;
+}
+
+.hero {
+    height: 100vh;
+    background: radial-gradient(ellipse at center, #0f172a 0%, var(--bg-main) 100%);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    position: relative;
+}
+
+.hero h1 {
+    font-size: 80px;
+    margin: 0;
+    background: linear-gradient(135deg, var(--text-primary), var(--accent-cyan));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 30px rgba(0, 243, 255, 0.2);
+    letter-spacing: -1px;
+}
+
+.hero p {
+    font-size: 24px;
+    max-width: 900px;
+    color: var(--text-secondary);
+    font-weight: 300;
+    margin-top: 20px;
+    line-height: 1.5;
+}
+
+.section {
+    padding: 100px 8%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+h2 {
+    font-size: 42px;
+    color: var(--text-primary);
+    margin-bottom: 50px;
+    position: relative;
+    display: inline-block;
+}
+
+.card {
+    background: var(--surface);
+    margin: 20px 0;
+    border-radius: 16px;
+    padding: 25px 30px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.card:hover {
+    transform: translateY(-4px);
+    background: var(--surface-hover);
+    border-color: rgba(0, 243, 255, 0.3);
+    box-shadow: 0 10px 30px rgba(0, 243, 255, 0.05);
+}
+
+.card h3 {
+    margin: 0;
+    color: var(--text-primary);
+    font-size: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.card h3::after {
+    content: '↓';
+    color: var(--accent-cyan);
+    font-size: 18px;
+    opacity: 0.7;
+}
+
+.content {
+    display: none;
+    padding-top: 20px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    margin-top: 20px;
+    font-size: 16px;
+}
+
+.flow {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    padding: 40px 0;
+}
+
+.node {
+    background: rgba(15, 23, 42, 0.8);
+    padding: 20px 40px;
+    border-radius: 30px;
+    font-weight: 600;
+    border: 1px solid rgba(59, 130, 246, 0.3);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    transition: 0.3s;
+    width: 320px;
+    text-align: center;
+    letter-spacing: 0.5px;
+    backdrop-filter: blur(8px);
+}
+
+.node:hover {
+    background: var(--accent-blue);
+    color: #fff;
+    border-color: var(--accent-cyan);
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.4);
+    transform: scale(1.02);
+}
+
+.arrow {
+    font-size: 24px;
+    color: var(--accent-cyan);
+    opacity: 0.6;
+    animation: float 2s ease-in-out infinite;
+}
+
+@keyframes float {
+    0% { transform: translateY(-3px); }
+    50% { transform: translateY(3px); }
+    100% { transform: translateY(-3px); }
+}
+
+.value {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+}
+
+.box {
+    background: linear-gradient(145deg, rgba(16, 35, 61, 0.6), rgba(11, 28, 51, 0.6));
+    padding: 30px;
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.03);
+    transition: 0.3s;
+    backdrop-filter: blur(10px);
+}
+
+.box:hover {
+    border-color: rgba(59, 130, 246, 0.5);
+    transform: translateY(-4px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.box h3 {
+    color: var(--accent-cyan);
+    margin-top: 0;
+    font-size: 22px;
+}
+
+.box p {
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin-bottom: 0;
+}
+
+.demo {
+    background: var(--surface);
+    padding: 40px;
+    border-radius: 20px;
+    border: 1px solid rgba(0, 243, 255, 0.1);
+    box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.2);
+}
+
+.demo h3 {
+    color: var(--accent-cyan);
+    margin-top: 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    padding-bottom: 15px;
+    margin-bottom: 25px;
+}
+
+.demo p {
+    background: rgba(239, 68, 68, 0.1);
+    color: #fca5a5;
+    padding: 16px 20px;
+    border-radius: 8px;
+    border-left: 4px solid #ef4444;
+    font-weight: 500;
+}
+
+.demo ol {
+    color: var(--text-secondary);
+    line-height: 2;
+    font-size: 16px;
+}
+
+.demo li::marker {
+    color: var(--accent-cyan);
+    font-weight: bold;
+}
+
+.graph {
+    text-align: center;
+    line-height: 2.2;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 16px;
+    background: rgba(0, 0, 0, 0.4);
+    padding: 30px;
+    border-radius: 12px;
+    margin-bottom: 30px;
+    color: var(--text-primary);
+    border: 1px dashed rgba(255, 255, 255, 0.1);
+}
+</style>
+<script>
+function toggle(id){
+ var x=document.getElementById(id);
+ x.style.display=(x.style.display==='block')?'none':'block';
+}
+</script>
+</head>
+<body>
+
+<div class="sticky">DATA QUALITY INTELLIGENCE HUB (DQIH)</div>
+
+<div class="hero">
+<h1>DQIH</h1>
+<h2>Data Quality Intelligence Platform</h2>
+<p>Where Data Quality Meets Business Impact</p>
+<p>Detect → Explain → Prioritize → Prevent Business Impact</p>
+</div>
+
+<div class="section">
+<h2>Business Problems We Solve</h2>
+<div class="value">
+<div class="box"><h3>Hidden Data Quality Issues</h3><p>Wrong reports, revenue leakage, compliance risks and bad decisions.</p></div>
+<div class="box"><h3>No Visibility</h3><p>Thousands of tables with no ownership, trust score or quality coverage.</p></div>
+<div class="box"><h3>Reactive Operations</h3><p>Issues found after dashboards break.</p></div>
+<div class="box"><h3>No Prioritization</h3><p>Hundreds of alerts with no way to identify business critical issues.</p></div>
+</div>
+</div>
+
+<div class="section">
+<h2>DQIH End-to-End Intelligence Flow</h2>
+<div class="flow">
+<div class="node">Data Sources</div><div class="arrow">↓</div>
+<div class="node">Metadata Discovery</div><div class="arrow">↓</div>
+<div class="node">Central Asset Registry</div><div class="arrow">↓</div>
+<div class="node">Table, Column & Rule Validation</div><div class="arrow">↓</div>
+<div class="node">Relationship Intelligence Graph</div><div class="arrow">↓</div>
+<div class="node">Drift Intelligence</div><div class="arrow">↓</div>
+<div class="node">Impact Radius Engine</div><div class="arrow">↓</div>
+<div class="node">Root Cause Correlation</div><div class="arrow">↓</div>
+<div class="node">Priority Scoring</div><div class="arrow">↓</div>
+<div class="node">Trust Score Generation</div><div class="arrow">↓</div>
+<div class="node">Executive Dashboard</div>
+</div>
+</div>
+
+<div class="section">
+<h2>Interactive Detailed Design</h2>
+
+<div class="card" onclick="toggle('l0')">
+<h3>L0 Metadata Discovery & Coverage Intelligence</h3>
+<div id="l0" class="content">
+Discover schemas, tables, columns, datatypes, owners, timestamps and row counts.<br>
+Create central registry.<br>
+Calculate coverage score.<br>
+Detect tables without DQ rules.<br>
+Output: Asset Registry + Coverage Dashboard.
+</div>
+</div>
+
+<div class="card" onclick="toggle('l1')">
+<h3>L1 Table Health Profiling</h3>
+<div id="l1" class="content">
+Checks: Row count trends, freshness, duplicate volume, partition effectiveness.<br>
+Stores historical snapshots.<br>
+Detects abnormal volume spikes and ETL failures.
+</div>
+</div>
+
+<div class="card" onclick="toggle('l2')">
+<h3>L2 Column Health Profiling</h3>
+<div id="l2" class="content">
+Null %, cardinality, min/max, avg length, patterns, top values, skew detection, robust outlier detection.<br>
+Generates column quality score.
+</div>
+</div>
+
+<div class="card" onclick="toggle('l3')">
+<h3>L3 Rule Validation Engine</h3>
+<div id="l3" class="content">
+Primary key uniqueness, composite keys, allowed values, date validations, custom YAML rule framework.<br>
+Failure severity assignment.<br>
+Failed records repository.
+</div>
+</div>
+
+<div class="card" onclick="toggle('l4')">
+<h3>L4 Relationship Intelligence Graph</h3>
+<div id="l4" class="content">
+Automatically discovers table relationships.<br>
+Uses name matching, datatype matching and overlap analysis.<br>
+Builds dependency graph.<br>
+Validates referential integrity.<br>
+Supports impact traversal.
+</div>
+</div>
+
+<div class="card" onclick="toggle('l5')">
+<h3>L5 Drift Intelligence</h3>
+<div id="l5" class="content">
+Volume drift, null drift, cardinality drift and distribution drift.<br>
+Statistical baseline generation.<br>
+No AI or ML used.<br>
+Uses historical profiling snapshots.
+</div>
+</div>
+
+<div class="card" onclick="toggle('impact')">
+<h3>Impact Radius Engine</h3>
+<div id="impact" class="content">
+Identifies downstream tables, dashboards, reports and pipelines impacted by an issue.<br>
+Calculates blast radius and business impact.
+</div>
+</div>
+
+<div class="card" onclick="toggle('root')">
+<h3>Root Cause Correlation</h3>
+<div id="root" class="content">
+Collapses multiple alerts into a single root cause.<br>
+Reduces alert fatigue.<br>
+Speeds up remediation.
+</div>
+</div>
+
+<div class="card" onclick="toggle('priority')">
+<h3>Priority & Trust Scoring</h3>
+<div id="priority" class="content">
+Priority Score = Severity + Criticality + Impact Radius + Trend Risk.<br><br>
+Trust Score = Completeness + Validity + Integrity + Freshness + Stability.<br>
+Generates executive-level confidence metrics.
+</div>
+</div>
+
+</div>
+
+<div class="section">
+<h2>Business Value Delivered</h2>
+<div class="value">
+<div class="box">Single Source of Data Trust</div>
+<div class="box">Early Failure Detection</div>
+<div class="box">Root Cause Identification</div>
+<div class="box">Impact Radius Analysis</div>
+<div class="box">Coverage Gap Detection</div>
+<div class="box">Priority Based Remediation</div>
+<div class="box">Reduced Operational Cost</div>
+<div class="box">Universal Dataset Agnostic Framework</div>
+<div class="box">Executive Trust Score Visibility</div>
+<div class="box">Faster Incident Resolution</div>
+</div>
+</div>
+
+<div class="section">
+<h2>Interactive Example Walkthrough</h2>
+<div class="demo">
+<h3>Sample Database</h3>
+<div class="graph">
+Customers<br>↓<br>
+Orders<br>
+↙ &nbsp;&nbsp;&nbsp; ↘<br>
+Payments &nbsp;&nbsp; Invoices<br>
+↓<br>
+Returns
+</div>
+
+<h3>Injected Failure</h3>
+<p>Customer_ID NULL rate increases from 2% to 45%</p>
+
+<ol>
+<li>L2 detects null anomaly.</li>
+<li>L5 confirms historical drift.</li>
+<li>L4 identifies dependency graph.</li>
+<li>Impact Radius identifies affected assets.</li>
+<li>Root Cause Engine links all failures to Customers.</li>
+<li>Priority Score escalates to Critical (96).</li>
+<li>Trust Score drops from 97 to 68.</li>
+<li>Executive Alert generated.</li>
+</ol>
+</div>
+</div>
+
+<div class="section">
+<h2>DQIH Vision</h2>
+<div class="box" style="text-align: center; font-size: 20px; padding: 50px;">
+We don't just detect bad data.<br><br>
+<span style="color: var(--accent-cyan); font-weight: bold;">We quantify business impact, identify root cause, prioritize remediation and establish enterprise-wide data trust.</span>
+</div>
+</div>
+
+</body>
+</html>
